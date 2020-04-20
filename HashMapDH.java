@@ -72,7 +72,7 @@ public class HashMapDH<Key, Value> extends AbstractHashMap<Key, Value> {
 	}
 
 	private int getEntryIndex(Key k) {
-		for (int i = 0; i < N; i++) {
+		for (int i = 0; i < size(); i++) {
 			int index = hashValue(k, i);
 			if (k.equals(buckets[index]))
 				return index;
@@ -86,7 +86,7 @@ public class HashMapDH<Key, Value> extends AbstractHashMap<Key, Value> {
 		do {
 			index = hashValue(k, probe);
 			probe++;
-		} while (buckets[index] != null);
+		} while (buckets[index] != null && probe < capacity());
 		return index;
 	}
 
@@ -126,14 +126,19 @@ public class HashMapDH<Key, Value> extends AbstractHashMap<Key, Value> {
 	 */
 	protected void checkAndResize() {
 		if (loadFactor() > criticalLoadFactor) {
-			// TODO: Fill this yourself
-
+			HashEntry<Key, Value> oldBuckets[] = buckets;
+			resizeBuckets(2 * N);
+			for (HashEntry<Key, Value> entry : oldBuckets) {
+				if (entry == null)
+					continue;
+				put(entry.getKey(), entry.getValue());
+			}
 		}
 	}
 
 	@Override
 	public Value get(Key k) {
-		for (int i = 0; i < N; i++) {
+		for (int i = 0; i < size(); i++) {
 			int index = hashValue(k, i);
 			if (k.equals(buckets[index]))
 				return buckets[index].getValue();
@@ -152,6 +157,7 @@ public class HashMapDH<Key, Value> extends AbstractHashMap<Key, Value> {
 			return temp;
 		}
 		buckets[findEmptyBucket(k)] = new HashEntry<>(k, v);
+		n++;
 		return null;
 	}
 
@@ -162,6 +168,7 @@ public class HashMapDH<Key, Value> extends AbstractHashMap<Key, Value> {
 			return null;
 		Value temp = buckets[removeIndex].getValue();
 		buckets[removeIndex] = null;
+		n--;
 		return temp;
 	}
 
