@@ -74,8 +74,10 @@ public class HashMapDH<Key, Value> extends AbstractHashMap<Key, Value> {
 	private int getEntryIndex(Key k) {
 		for (int i = 0; i < size(); i++) {
 			int index = hashValue(k, i);
-			if (k.equals(buckets[index]))
-				return index;
+			if (buckets[index] != null) {
+				if (k.equals(buckets[index].getKey()))
+					return index;
+			}
 		}
 		return -1;
 	}
@@ -100,7 +102,7 @@ public class HashMapDH<Key, Value> extends AbstractHashMap<Key, Value> {
 	 */
 	protected int primaryHash(int hashCode) {
 		// TODO: Implement MAD compression given the hash code, should be 1 line
-		return Math.abs(((a * hashCode) + b) % P);
+		return Math.abs(((a * hashCode) + b) % P); // TODO: AND MOD N
 	}
 
 	/**
@@ -138,17 +140,18 @@ public class HashMapDH<Key, Value> extends AbstractHashMap<Key, Value> {
 
 	@Override
 	public Value get(Key k) {
-		for (int i = 0; i < size(); i++) {
-			int index = hashValue(k, i);
-			if (k.equals(buckets[index]))
-				return buckets[index].getValue();
-		}
-
-		return null;
+		if (k == null)
+			return null;
+		int getIndex = getEntryIndex(k);
+		if (getIndex == -1)
+			return null;
+		return buckets[getIndex].getValue();
 	}
 
 	@Override
 	public Value put(Key k, Value v) {
+		if (k == null)
+			return null;
 		checkAndResize();
 		int putIndex = getEntryIndex(k);
 		if (putIndex != -1) {
@@ -163,6 +166,8 @@ public class HashMapDH<Key, Value> extends AbstractHashMap<Key, Value> {
 
 	@Override
 	public Value remove(Key k) {
+		if (k == null)
+			return null;
 		int removeIndex = getEntryIndex(k);
 		if (removeIndex == -1)
 			return null;
@@ -176,7 +181,7 @@ public class HashMapDH<Key, Value> extends AbstractHashMap<Key, Value> {
 	// structure!
 	@Override
 	public Iterable<Key> keySet() {
-		return Arrays.stream(buckets).map(x -> x.getKey()).collect(Collectors.toSet());
+		return Arrays.stream(buckets).filter(x -> (x != null)).map(x -> x.getKey()).collect(Collectors.toSet());
 	}
 
 	@Override
