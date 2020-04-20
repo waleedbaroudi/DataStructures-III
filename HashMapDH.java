@@ -102,7 +102,7 @@ public class HashMapDH<Key, Value> extends AbstractHashMap<Key, Value> {
 	 */
 	protected int primaryHash(int hashCode) {
 		// TODO: Implement MAD compression given the hash code, should be 1 line
-		return Math.abs(((a * hashCode) + b) % P); // TODO: AND MOD N
+		return Math.abs(((a * hashCode) + b) % P) % N; // TODO: ADD MOD N
 	}
 
 	/**
@@ -130,6 +130,7 @@ public class HashMapDH<Key, Value> extends AbstractHashMap<Key, Value> {
 		if (loadFactor() > criticalLoadFactor) {
 			HashEntry<Key, Value> oldBuckets[] = buckets;
 			resizeBuckets(2 * N);
+			updateHashParams();
 			for (HashEntry<Key, Value> entry : oldBuckets) {
 				if (entry == null)
 					continue;
