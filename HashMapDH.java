@@ -72,7 +72,7 @@ public class HashMapDH<Key, Value> extends AbstractHashMap<Key, Value> {
 	}
 
 	private int getEntryIndex(Key k) {
-		for (int i = 0; i < size(); i++) {
+		for (int i = 0; i < N; i++) {
 			int index = hashValue(k, i);
 			if (buckets[index] != null) {
 				if (k.equals(buckets[index].getKey()))
@@ -128,6 +128,7 @@ public class HashMapDH<Key, Value> extends AbstractHashMap<Key, Value> {
 	 */
 	protected void checkAndResize() {
 		if (loadFactor() > criticalLoadFactor) {
+			n = 0;
 			HashEntry<Key, Value> oldBuckets[] = buckets;
 			resizeBuckets(2 * N);
 			updateHashParams();
@@ -170,8 +171,9 @@ public class HashMapDH<Key, Value> extends AbstractHashMap<Key, Value> {
 		if (k == null)
 			return null;
 		int removeIndex = getEntryIndex(k);
-		if (removeIndex == -1)
+		if (removeIndex == -1) {
 			return null;
+		}
 		Value temp = buckets[removeIndex].getValue();
 		buckets[removeIndex] = null;
 		n--;

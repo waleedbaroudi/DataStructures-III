@@ -86,7 +86,7 @@ public class HashMapSC<Key, Value> extends AbstractHashMap<Key, Value> {
 
 	private Value addToBucket(LinkedList<HashEntry<Key, Value>> ls, HashEntry<Key, Value> e) {
 		for (HashEntry<Key, Value> entry : ls) {
-			if (entry.getKey() == e.getKey()) {
+			if (entry.getKey().equals(e.getKey())) {
 				Value temp = entry.getValue();
 				entry.setValue(e.getValue());
 				return temp;
@@ -104,7 +104,7 @@ public class HashMapSC<Key, Value> extends AbstractHashMap<Key, Value> {
 		int getIndex = hashValue(k);
 		if (buckets[getIndex] == null)
 			return null;
-		for (HashEntry<Key, Value> entry : buckets[hashValue(k)]) {
+		for (HashEntry<Key, Value> entry : buckets[getIndex]) {
 			if (k.equals(entry.getKey()))
 				return entry.getValue();
 		}
@@ -175,6 +175,7 @@ public class HashMapSC<Key, Value> extends AbstractHashMap<Key, Value> {
 	 */
 	protected void checkAndResize() {
 		if (loadFactor() > criticalLoadFactor) {
+			n = 0;
 			LinkedList<HashEntry<Key, Value>>[] oldBuckets = buckets;
 			resizeBuckets(N * 2);
 			updateHashParams();

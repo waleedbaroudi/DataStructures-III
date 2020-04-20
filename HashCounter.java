@@ -25,107 +25,114 @@ import given.iPrintable;
  */
 
 public class HashCounter<Key> implements iPrintable<Key> {
-  
-  AbstractHashMap<Key,Integer> A;
-  
-  // Total count of all items
-  int s;
-  
-  /*
-   * ADD MORE FIELDS IF NEEDED
-   * 
-   */
 
-  /*
-   * ADD A NESTED CLASS IF NEEDED
-   * 
-   */
-  
-  // The hashmap to be used for counting will be supplied from the outside. 
-  // Not the best choice for production code!
-  public HashCounter(AbstractHashMap<Key,Integer> inContainer) {
-    A = inContainer;
-    
-    /*
-     * ADD MORE CODE IF NEEDED
-     * 
-     */
-  }
-  
-  //Default constructor, feel free to change the default hash map implementation to HashMapSC
-  public HashCounter() {
-    this(new HashMapDH<Key, Integer>());
-  }
-  
-  /*
-   * ADD MORE METHODS IF NEEDED
-   * 
-   */
-  
-  public int size() {
-    return A.size();
-  }
-  
-  public boolean isEmpty() {
-    return A.isEmpty();
-  }
-  
-  public int total() {
-    return s;
-  }
-  
-  /*
-   * Increments the count of the key if it is already in the counter, 
-   * creates a new item with count 1 if not
-   * 
-   * Do not forget to update s 
-   * 
-   */
-  public void increment(Key key) {
-    //TODO: Implement this
-  }
-  
-  /*
-   * Returns the count of the key if it is in the counter, 
-   * or returns 0 if not
-   * 
-   */
-  public int getCount(Key key) {
-    //TODO: Implement this
-    return -1;
-  }
-  
-  /*
-   * Convenience function that counts all the keys in the given array
-   * 
-   */
-  public void countAll(Key[] keys) {
-    for (Key k : keys) {
-      increment(k);
-    }
-  }
-  
-  /*
-   * Convenience function that counts all the keys in the given iterable (e.g. list)
-   * 
-   */
-  public void countAll(Iterable<Key> keys) {
-    for (Key k : keys) {
-      increment(k);
-    }
-  }
-  
-  /*
-   * Return an iterable collection (e.g. an ArrayList) of the unique keys in the counter
-   * 
-   */
-  public Iterable<Key> keySet() {
-    return A.keySet();
-  }
-  
-  @Override
-  public Object get(Key key) {
-    return getCount(key);
-  }
+	public AbstractHashMap<Key, Integer> A;
+
+	// Total count of all items
+	int s;
+
+	/*
+	 * ADD MORE FIELDS IF NEEDED
+	 * 
+	 */
+
+	/*
+	 * ADD A NESTED CLASS IF NEEDED
+	 * 
+	 */
+
+	// The hashmap to be used for counting will be supplied from the outside.
+	// Not the best choice for production code!
+	public HashCounter(AbstractHashMap<Key, Integer> inContainer) {
+		A = inContainer;
+
+		s = 0;
+	}
+
+	// Default constructor, feel free to change the default hash map implementation
+	// to HashMapSC
+	public HashCounter() {
+		this(new HashMapDH<Key, Integer>());
+	}
+
+	/*
+	 * ADD MORE METHODS IF NEEDED
+	 * 
+	 */
+
+	public int size() {
+		return A.size();
+	}
+
+	public boolean isEmpty() {
+		return A.isEmpty();
+	}
+
+	public int total() {
+		return s;
+	}
+
+	/*
+	 * Increments the count of the key if it is already in the counter, creates a
+	 * new item with count 1 if not
+	 * 
+	 * Do not forget to update s
+	 * 
+	 */
+	public void increment(Key key) {
+		s++;
+		Integer old = A.get(key);
+		if (old == null) {
+			A.put(key, 1);
+		} else {
+			A.put(key, old + 1);
+		}
+	}
+
+	/*
+	 * Returns the count of the key if it is in the counter, or returns 0 if not
+	 * 
+	 */
+	public int getCount(Key key) {
+		Integer count = A.get(key);
+		if (count == null)
+			return 0;
+		return count;
+	}
+
+	/*
+	 * Convenience function that counts all the keys in the given array
+	 * 
+	 */
+	public void countAll(Key[] keys) {
+		for (Key k : keys) {
+			increment(k);
+		}
+	}
+
+	/*
+	 * Convenience function that counts all the keys in the given iterable (e.g.
+	 * list)
+	 * 
+	 */
+	public void countAll(Iterable<Key> keys) {
+		for (Key k : keys) {
+			increment(k);
+		}
+	}
+
+	/*
+	 * Return an iterable collection (e.g. an ArrayList) of the unique keys in the
+	 * counter
+	 * 
+	 */
+	public Iterable<Key> keySet() {
+		return A.keySet();
+	}
+
+	@Override
+	public Object get(Key key) {
+		return getCount(key);
+	}
 
 }

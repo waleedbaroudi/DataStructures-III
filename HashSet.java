@@ -16,61 +16,62 @@ import given.iSet;
  * 
  */
 
-public class HashSet<Key> implements iSet<Key>, iPrintable<Key>{
-  
-  // A default public constructor is mandatory!
-  public HashSet() {
-   /*
-    * Add code here 
-    */
-  }
-  
-  /*
-   * 
-   * Add whatever you want!
-   * 
-   */
+public class HashSet<Key> implements iSet<Key>, iPrintable<Key> {
 
-  @Override
-  public int size() {
-    // TODO Auto-generated method stub
-    return 0;
-  }
+	HashMapDH<Key, Integer> set;
 
-  @Override
-  public boolean isEmpty() {
-    // TODO Auto-generated method stub
-    return false;
-  }
+	// A default public constructor is mandatory!
+	public HashSet() {
+		set = new HashMapDH<>();
+	}
 
-  @Override
-  public boolean contains(Key k) {
-    // TODO Auto-generated method stub
-    return false;
-  }
+	/*
+	 * 
+	 * Add whatever you want!
+	 * 
+	 */
 
-  @Override
-  public boolean put(Key k) {
-    // TODO Auto-generated method stub
-    return false;
-  }
+	@Override
+	public int size() {
+		return set.size();
+	}
 
-  @Override
-  public boolean remove(Key k) {
-    // TODO Auto-generated method stub
-    return false;
-  }
+	@Override
+	public boolean isEmpty() {
+		return set.isEmpty();
+	}
 
-  @Override
-  public Iterable<Key> keySet() {
-    // TODO Auto-generated method stub
-    return null;
-  }
+	@Override
+	public boolean contains(Key k) {
+		for (Key key : set.keySet()) {
+			if (key.equals(k))
+				return true;
+		}
+		return false;
+	}
 
-  @Override
-  public Object get(Key key) {
-    // Do not touch
-    return null;
-  }
+	@Override
+	public boolean put(Key k) {
+		if (set.get(k) != null)
+			return true;
+		set.put(k, 0);
+		return false;
+	}
+
+	@Override
+	public boolean remove(Key k) {
+		return set.remove(k) == null ? false : true;
+	}
+
+	@Override
+	public Iterable<Key> keySet() {
+		return set.keySet();
+	}
+
+	@Override
+	public Object get(Key key) {
+		// Do not touch
+		return null;
+	}
 
 }
