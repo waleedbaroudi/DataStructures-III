@@ -3,33 +3,14 @@ package code;
 import given.iPrintable;
 import given.iSet;
 
-/*
- * A set class implemented with hashing. Note that there is no "value" here 
- * 
- * You are free to implement this however you want. Two potential ideas:
- * 
- * - Use a hashmap you have implemented with a dummy value class that does not take too much space
- * OR
- * - Re-implement the methods but tailor/optimize them for set operations
- * 
- * You are not allowed to use any existing java data structures
- * 
- */
 
 public class HashSet<Key> implements iSet<Key>, iPrintable<Key> {
 
 	HashMapDH<Key, Integer> set;
 
-	// A default public constructor is mandatory!
 	public HashSet() {
 		set = new HashMapDH<>();
 	}
-
-	/*
-	 * 
-	 * Add whatever you want!
-	 * 
-	 */
 
 	@Override
 	public int size() {
@@ -70,7 +51,6 @@ public class HashSet<Key> implements iSet<Key>, iPrintable<Key> {
 
 	@Override
 	public Object get(Key key) {
-		// Do not touch
 		return null;
 	}
 
